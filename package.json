@@ -1,0 +1,39 @@
+{
+  "name": "fetcher",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "clean": "rimraf dist",
+    "lint": "tsc",
+    "dev": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FiR3bL4z3/fetcher.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FiR3bL4z3/fetcher/issues"
+  },
+  "homepage": "https://github.com/FiR3bL4z3/fetcher#readme",
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "npm-run-all": "^4.1.5",
+    "react": "^18.2.0",
+    "rimraf": "^4.4.0",
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.5"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  }
+}
