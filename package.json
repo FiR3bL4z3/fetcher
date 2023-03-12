@@ -19,13 +19,14 @@
     "url": "git+https://github.com/FiR3bL4z3/fetcher.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "FiR3bL4z3",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/FiR3bL4z3/fetcher/issues"
   },
   "homepage": "https://github.com/FiR3bL4z3/fetcher#readme",
   "devDependencies": {
+    "@changesets/cli": "^2.26.0",
     "@types/react": "^18.0.28",
     "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
@@ -35,5 +36,6 @@
   },
   "peerDependencies": {
     "react": ">=17.0.0"
-  }
+  },
+  "dependencies": {}
 }
