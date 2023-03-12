@@ -7,7 +7,7 @@ export type MutationFunction<
   MutationFunctionInputType extends any[]
 > = (...args: MutationFunctionInputType) => Result<DataType, ErrorType>;
 
-export type FetcherMutation<
+export type Mutation<
   DataType,
   ErrorType,
   MutationFunctionInputType extends any[]

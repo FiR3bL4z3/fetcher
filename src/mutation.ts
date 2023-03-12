@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
-import {
-  FetcherState,
-  FetcherQuery,
-  QueryFunction,
-  QueryOptions,
-} from "./types";
+import { useState } from "react";
+import { FetcherState, Mutation, MutationFunction, Options } from "./types";
 
-export const fetcherQuery = <
+export const mutation = <
   DataType,
   ErrorType,
-  QueryFunctionInputType extends any[]
+  MutationFunctionInputType extends any[]
 >(
-  queryFunction: QueryFunction<DataType, ErrorType, QueryFunctionInputType>,
-  options?: QueryOptions<DataType, ErrorType>
-): FetcherQuery<DataType, ErrorType, QueryFunctionInputType> => {
-  return (...args: QueryFunctionInputType) => {
+  mutationFunction: MutationFunction<
+    DataType,
+    ErrorType,
+    MutationFunctionInputType
+  >,
+  options?: Options<DataType, ErrorType>
+): Mutation<DataType, ErrorType, MutationFunctionInputType> => {
+  return () => {
     const [queryState, setQueryState] = useState<
       FetcherState<DataType, ErrorType>
     >({
@@ -28,7 +27,9 @@ export const fetcherQuery = <
       isLoading: false,
     });
 
-    const queryFunctionExtended = async () => {
+    const mutationFunctionExtended = async (
+      ...args: MutationFunctionInputType
+    ) => {
       if (queryState.status === "idle") {
         setQueryState({
           status: "loading-from-idle",
@@ -67,7 +68,7 @@ export const fetcherQuery = <
           isLoading: true,
         });
       }
-      const result = await queryFunction(...args);
+      const result = await mutationFunction(...args);
       if (result.ok) {
         setQueryState({
           status: "success",
@@ -97,7 +98,7 @@ export const fetcherQuery = <
       }
     };
 
-    const refetch = () => {
+    const mutate = (...args: MutationFunctionInputType) => {
       if (
         queryState.status === "loading-from-idle" ||
         queryState.status === "loading-from-error" ||
@@ -105,15 +106,9 @@ export const fetcherQuery = <
       ) {
         return;
       }
-      queryFunctionExtended();
+      mutationFunctionExtended(...args);
     };
 
-    useEffect(() => {
-      if (options?.fetchByDefault ?? true) {
-        queryFunctionExtended();
-      }
-    }, []);
-
-    return { queryState, refetch };
+    return { queryState, mutate };
   };
 };

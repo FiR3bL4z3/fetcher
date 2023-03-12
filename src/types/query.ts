@@ -7,11 +7,9 @@ export type QueryFunction<
   QueryFunctionInputType extends any[]
 > = (...args: QueryFunctionInputType) => Result<DataType, ErrorType>;
 
-export type FetcherQuery<
-  DataType,
-  ErrorType,
-  QueryFunctionInputType extends any[]
-> = (...args: QueryFunctionInputType) => {
+export type Query<DataType, ErrorType, QueryFunctionInputType extends any[]> = (
+  ...args: QueryFunctionInputType
+) => {
   queryState: FetcherState<DataType, ErrorType>;
   refetch: () => void;
 };
