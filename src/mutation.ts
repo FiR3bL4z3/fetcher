@@ -4,14 +4,14 @@ import { FetcherState, Mutation, MutationFunction, Options } from "./types";
 export const mutation = <
   DataType,
   ErrorType,
-  MutationFunctionInputType extends any[]
+  MutationFunctionInputType extends readonly any[]
 >(
   mutationFunction: MutationFunction<
     DataType,
     ErrorType,
     MutationFunctionInputType
   >,
-  options?: Options<DataType, ErrorType>
+  options?: Options<DataType, ErrorType, MutationFunctionInputType>
 ): Mutation<DataType, ErrorType, MutationFunctionInputType> => {
   return () => {
     const [queryState, setQueryState] = useState<
@@ -81,7 +81,8 @@ export const mutation = <
           isLoadingFromSuccess: false,
           isLoading: false,
         });
-        options?.onSuccess !== undefined && options.onSuccess(result.data);
+        options?.onSuccess !== undefined &&
+          options.onSuccess(result.data, ...args);
       } else {
         setQueryState({
           status: "error",
@@ -94,7 +95,8 @@ export const mutation = <
           isLoadingFromSuccess: false,
           isLoading: false,
         });
-        options?.onError !== undefined && options.onError(result.error);
+        options?.onError !== undefined &&
+          options.onError(result.error, ...args);
       }
     };
 
@@ -109,6 +111,6 @@ export const mutation = <
       mutationFunctionExtended(...args);
     };
 
-    return { queryState, mutate };
+    return { ...queryState, mutate };
   };
 };

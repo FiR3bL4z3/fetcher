@@ -4,10 +4,10 @@ import { FetcherState, Query, QueryFunction, QueryOptions } from "./types";
 export const query = <
   DataType,
   ErrorType,
-  QueryFunctionInputType extends any[]
+  QueryFunctionInputType extends readonly any[]
 >(
   queryFunction: QueryFunction<DataType, ErrorType, QueryFunctionInputType>,
-  options?: QueryOptions<DataType, ErrorType>
+  options?: QueryOptions<DataType, ErrorType, QueryFunctionInputType>
 ): Query<DataType, ErrorType, QueryFunctionInputType> => {
   return (...args: QueryFunctionInputType) => {
     const [queryState, setQueryState] = useState<
@@ -75,7 +75,8 @@ export const query = <
           isLoadingFromSuccess: false,
           isLoading: false,
         });
-        options?.onSuccess !== undefined && options.onSuccess(result.data);
+        options?.onSuccess !== undefined &&
+          options.onSuccess(result.data, ...args);
       } else {
         setQueryState({
           status: "error",
@@ -88,7 +89,8 @@ export const query = <
           isLoadingFromSuccess: false,
           isLoading: false,
         });
-        options?.onError !== undefined && options.onError(result.error);
+        options?.onError !== undefined &&
+          options.onError(result.error, ...args);
       }
     };
 
@@ -109,6 +111,6 @@ export const query = <
       }
     }, []);
 
-    return { queryState, refetch };
+    return { ...queryState, refetch };
   };
 };

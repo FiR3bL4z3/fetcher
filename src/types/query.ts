@@ -4,12 +4,13 @@ import { Result } from "./result";
 export type QueryFunction<
   DataType,
   ErrorType,
-  QueryFunctionInputType extends any[]
+  QueryFunctionInputType extends readonly any[]
 > = (...args: QueryFunctionInputType) => Result<DataType, ErrorType>;
 
-export type Query<DataType, ErrorType, QueryFunctionInputType extends any[]> = (
+export type Query<
+  DataType,
+  ErrorType,
+  QueryFunctionInputType extends readonly any[]
+> = (
   ...args: QueryFunctionInputType
-) => {
-  queryState: FetcherState<DataType, ErrorType>;
-  refetch: () => void;
-};
+) => FetcherState<DataType, ErrorType> & { refetch: () => void };
